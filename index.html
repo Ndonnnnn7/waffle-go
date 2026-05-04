@@ -4,660 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Waffle Go! — Business Model Canvas</title>
+    <title>Waffle Go! - Business Model Canvas</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --red: #C8372D;
-            --red-dark: #8B1A12;
-            --red-light: #F5C6C3;
-            --cream: #FAF3E8;
-            --cream-dark: #EDE0C8;
-            --brown: #5C3A1E;
-            --brown-light: #9C6B3C;
-            --text: #2C1810;
-            --white: #FFFDF9;
-            --gold: #D4A843;
-        }
-
-        * {
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            background: var(--cream);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'DM Sans', sans-serif;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Background texture */
-        body::before {
-            content: '';
-            position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 20%, rgba(200, 55, 45, 0.06) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(92, 58, 30, 0.08) 0%, transparent 50%),
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='%235C3A1E' opacity='0.06'/%3E%3C/svg%3E");
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* Title above book */
-        .book-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            letter-spacing: 6px;
-            text-transform: uppercase;
-            color: var(--brown-light);
-            margin-bottom: 24px;
-            position: relative;
-            z-index: 10;
-        }
-
-        /* Scene + shadow */
-        .scene {
-            position: relative;
-            z-index: 10;
-        }
-
-        .book-shadow {
-            position: absolute;
-            bottom: -25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 480px;
-            height: 40px;
-            background: radial-gradient(ellipse, rgba(44, 24, 16, 0.3) 0%, transparent 70%);
-            filter: blur(10px);
-            z-index: 1;
-            transition: width 0.6s ease;
-        }
-
-        /* Book container */
-        .book {
-            position: relative;
-            width: 500px;
-            height: 700px;
-            transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
-            z-index: 2;
-            transform-style: preserve-3d;
-        }
-
-        /* Paper layers */
-        .paper {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            perspective: 2000px;
-            transform-style: preserve-3d;
-            transform-origin: left center;
-            transition: transform 0.75s cubic-bezier(0.645, 0.045, 0.355, 1);
-            cursor: pointer;
-        }
-
-        /* Page faces */
-        .front,
-        .back {
-            background: var(--white);
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            padding: 50px 45px;
-            border-radius: 6px 24px 24px 6px;
-            box-shadow:
-                inset 8px 0 25px rgba(44, 24, 16, 0.04),
-                3px 6px 30px rgba(44, 24, 16, 0.18),
-                -1px 0 0 rgba(44, 24, 16, 0.08);
-            overflow: hidden;
-        }
-
-        .front::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 8px;
-            height: 100%;
-            background: linear-gradient(to right, rgba(44, 24, 16, 0.12), transparent);
-            border-radius: 6px 0 0 6px;
-        }
-
-        .back {
-            transform: rotateY(180deg);
-            border-radius: 24px 6px 6px 24px;
-            box-shadow:
-                inset -8px 0 25px rgba(44, 24, 16, 0.04),
-                -3px 6px 30px rgba(44, 24, 16, 0.18),
-                1px 0 0 rgba(44, 24, 16, 0.08);
-        }
-
-        .back::before {
-            content: '';
-            position: absolute;
-            right: 0;
-            top: 0;
-            width: 8px;
-            height: 100%;
-            background: linear-gradient(to left, rgba(44, 24, 16, 0.12), transparent);
-            border-radius: 0 6px 6px 0;
-        }
-
-        .paper.flipped {
-            transform: rotateY(-180deg);
-        }
-
-        /* ── COVER ── */
-        .cover {
-            background: linear-gradient(160deg, var(--red-dark) 0%, var(--red) 55%, #E85A4F 100%);
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 60px 45px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cover::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='38' y='0' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='0' y='38' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='76' y='38' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='38' y='76' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3C/svg%3E");
-            pointer-events: none;
-        }
-
-        .cover-waffle-circle {
-            width: 160px;
-            height: 160px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 24px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cover-waffle-circle::before {
-            content: '🧇';
-            font-size: 85px;
-            line-height: 1;
-        }
-
-        .cover-brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 64px;
-            font-weight: 900;
-            color: white;
-            line-height: 1;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-        }
-
-        .cover-tagline {
-            font-size: 16px;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 30px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .cover-badge {
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 40px;
-            padding: 10px 24px;
-            font-size: 14px;
-            font-weight: 600;
-            color: rgba(255, 255, 255, 0.95);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            position: relative;
-            z-index: 1;
-        }
-
-        .flip-hint {
-            position: absolute;
-            bottom: 30px;
-            color: rgba(255, 255, 255, 0.75);
-            font-size: 14px;
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            z-index: 1;
-            animation: hintBounce 2s ease-in-out infinite;
-        }
-
-        @keyframes hintBounce {
-
-            0%,
-            100% {
-                transform: translateX(0);
-                opacity: 0.75;
-            }
-
-            50% {
-                transform: translateX(8px);
-                opacity: 1;
-            }
-        }
-
-        /* ── BMC PAGES ── */
-        .bmc-header {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            margin-bottom: 24px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--cream-dark);
-        }
-
-        .bmc-icon-wrap {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 6px 16px rgba(200, 55, 45, 0.3);
-        }
-
-        .bmc-icon-wrap i {
-            font-size: 26px;
-            color: white;
-        }
-
-        .bmc-header-text h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 4px;
-        }
-
-        .bmc-header-text span {
-            font-size: 14px;
-            color: var(--brown-light);
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
-
-        .bmc-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            flex: 1;
-        }
-
-        .bmc-list li {
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            font-size: 16px;
-            color: var(--text);
-            line-height: 1.6;
-            background: var(--cream);
-            border-radius: 12px;
-            padding: 16px 20px;
-            border-left: 4px solid var(--cream-dark);
-            transition: border-color 0.2s;
-        }
-
-        .bmc-list li strong {
-            color: var(--red-dark);
-            display: block;
-            font-size: 16px;
-            margin-bottom: 4px;
-        }
-
-        .bmc-list li .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--red);
-            flex-shrink: 0;
-            margin-top: 8px;
-        }
-
-        /* ── INTRO PAGE ── */
-        .intro-page h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 32px;
-            color: var(--red-dark);
-            margin-bottom: 20px;
-        }
-
-        .intro-page p {
-            font-size: 18px;
-            line-height: 1.8;
-            color: var(--text);
-            margin-bottom: 20px;
-        }
-
-        .intro-highlight {
-            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
-            border-radius: 16px;
-            padding: 24px;
-            color: white;
-            font-size: 17px;
-            line-height: 1.7;
-            margin-top: auto;
-        }
-
-        .intro-highlight strong {
-            font-size: 20px;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        /* ── MENU PAGE ── */
-        .menu-item {
-            background: var(--cream);
-            border-radius: 16px;
-            padding: 18px 24px;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            border: 2px solid var(--cream-dark);
-        }
-
-        .menu-emoji {
-            font-size: 38px;
-            flex-shrink: 0;
-        }
-
-        .menu-info strong {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text);
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .menu-info span {
-            font-size: 15px;
-            color: var(--brown-light);
-            line-height: 1.5;
-        }
-
-        .menu-price {
-            margin-left: auto;
-            font-family: 'Playfair Display', serif;
-            font-size: 22px;
-            font-weight: 700;
-            color: var(--red);
-            flex-shrink: 0;
-        }
-
-        /* ── ADVANTAGE PAGE ── */
-        .advantage-item {
-            background: var(--cream);
-            border-radius: 16px;
-            padding: 18px 22px;
-            margin-bottom: 14px;
-            display: flex;
-            align-items: flex-start;
-            gap: 16px;
-        }
-
-        .adv-emoji {
-            font-size: 28px;
-            flex-shrink: 0;
-            margin-top: 2px;
-        }
-
-        .adv-text strong {
-            font-size: 17px;
-            font-weight: 700;
-            color: var(--red-dark);
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .adv-text span {
-            font-size: 15px;
-            color: var(--text);
-            line-height: 1.5;
-        }
-
-        /* ── BACK COVER ── */
-        .back-cover {
-            background: linear-gradient(160deg, var(--brown) 0%, var(--brown-light) 100%);
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .back-cover::after {
-            content: '🧇';
-            position: absolute;
-            font-size: 280px;
-            opacity: 0.06;
-            bottom: -60px;
-            right: -40px;
-            pointer-events: none;
-        }
-
-        .back-cover h2 {
-            font-family: 'Playfair Display', serif;
-            font-size: 38px;
-            color: white;
-            margin-bottom: 12px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .back-cover .sub {
-            font-size: 16px;
-            color: rgba(255, 255, 255, 0.75);
-            margin-bottom: 36px;
-            font-style: italic;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-list {
-            background: rgba(255, 255, 255, 0.12);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 24px 30px;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            font-size: 17px;
-            font-weight: 500;
-            color: white;
-        }
-
-        .contact-item i {
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-size: 20px;
-        }
-
-        .back-cover .flip-hint {
-            animation-name: hintBounceLeft;
-        }
-
-        @keyframes hintBounceLeft {
-
-            0%,
-            100% {
-                transform: translateX(0);
-                opacity: 0.75;
-            }
-
-            50% {
-                transform: translateX(-8px);
-                opacity: 1;
-            }
-        }
-
-        /* Page number */
-        .page-num {
-            position: absolute;
-            bottom: 14px;
-            right: 18px;
-            font-size: 10px;
-            color: var(--cream-dark);
-            letter-spacing: 1px;
-            font-weight: 500;
-        }
-
-        .back .page-num {
-            left: 18px;
-            right: auto;
-        }
-
-        /* ── NAVIGATION ── */
-        .controls {
-            position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 20px;
-            z-index: 100;
-        }
-
-        .ctrl-btn {
-            background: var(--brown);
-            color: white;
-            border: none;
-            padding: 16px 36px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            box-shadow: 0 6px 20px rgba(44, 24, 16, 0.3);
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        .ctrl-btn:hover:not(:disabled) {
-            background: var(--red);
-            transform: translateY(-4px);
-            box-shadow: 0 10px 25px rgba(200, 55, 45, 0.4);
-        }
-
-        .ctrl-btn:active:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(200, 55, 45, 0.35);
-        }
-
-        .ctrl-btn:disabled {
-            display: none;
-        }
-
-        /* Progress dots */
-        .progress {
-            position: fixed;
-            bottom: 120px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 100;
-        }
-
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--cream-dark);
-            transition: all 0.3s ease;
-        }
-
-        .dot.active {
-            background: var(--red);
-            width: 30px;
-            border-radius: 6px;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .book {
-                width: 260px;
-                height: 400px;
-            }
-
-            .front,
-            .back {
-                padding: 24px 20px;
-            }
-
-            .cover-brand {
-                font-size: 34px;
-            }
-
-            .bmc-header h2 {
-                font-size: 15px;
-            }
-
-            .bmc-list li {
-                font-size: 12px;
-                padding: 8px 10px;
-            }
-
-            .ctrl-btn {
-                padding: 10px 16px;
-                font-size: 12px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -677,10 +30,10 @@
                     <div class="cover-badge">Business Model Canvas</div>
                     <div class="flip-hint">Buka <i class="fas fa-arrow-right"></i></div>
                 </div>
-                <div class="back intro-page" style="padding: 36px 30px;">
+                <div class="back intro-page intro-face">
                     <h2>Revolusi Waffle Oat</h2>
                     <p>Waffle Go! hadir sebagai pionir kuliner yang memadukan kelezatan camilan bergaya modern dengan
-                        gaya hidup sehat—mendobrak stigma bahwa makanan diet itu membosankan.</p>
+                        gaya hidup sehat - mendobrak stigma bahwa makanan diet itu membosankan.</p>
                     <p>Dokumen ini menjabarkan <strong>9 blok utama BMC</strong> yang memetakan secara detail potensi
                         dan strategi operasional kami.</p>
                     <div class="intro-highlight">
@@ -694,7 +47,7 @@
 
             <!-- PAPER 2: Customer Segments / Value Propositions -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
+                <div class="front content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-users"></i></div>
                         <div class="bmc-header-text">
@@ -704,7 +57,7 @@
                     </div>
                     <ul class="bmc-list">
                         <li><span class="dot"></span>
-                            <div><strong>Gen Z & Milenial</strong>Usia 15–35 tahun, urban, aktif di media sosial</div>
+                            <div><strong>Gen Z & Milenial</strong>Usia 15-35 tahun, urban, aktif di media sosial</div>
                         </li>
                         <li><span class="dot"></span>
                             <div><strong>Mahasiswa & Pekerja Awal</strong>Sibuk, butuh asupan bergizi yang praktis</div>
@@ -719,7 +72,7 @@
                     </ul>
                     <div class="page-num">2 / 14</div>
                 </div>
-                <div class="back" style="padding: 40px 38px;">
+                <div class="back content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-gem"></i></div>
                         <div class="bmc-header-text">
@@ -748,7 +101,7 @@
 
             <!-- PAPER 3: Channels / Customer Relationships -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
+                <div class="front content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-store"></i></div>
                         <div class="bmc-header-text">
@@ -772,7 +125,7 @@
                     </ul>
                     <div class="page-num">4 / 14</div>
                 </div>
-                <div class="back" style="padding: 40px 38px;">
+                <div class="back content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-heart"></i></div>
                         <div class="bmc-header-text">
@@ -800,7 +153,7 @@
 
             <!-- PAPER 4: Revenue Streams / Key Activities -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
+                <div class="front content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-money-bill-wave"></i></div>
                         <div class="bmc-header-text">
@@ -824,7 +177,7 @@
                     </ul>
                     <div class="page-num">6 / 14</div>
                 </div>
-                <div class="back" style="padding: 40px 38px;">
+                <div class="back content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-cogs"></i></div>
                         <div class="bmc-header-text">
@@ -852,7 +205,7 @@
 
             <!-- PAPER 5: Key Resources / Key Partnerships -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
+                <div class="front content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-box-open"></i></div>
                         <div class="bmc-header-text">
@@ -876,7 +229,7 @@
                     </ul>
                     <div class="page-num">8 / 14</div>
                 </div>
-                <div class="back" style="padding: 40px 38px;">
+                <div class="back content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-handshake"></i></div>
                         <div class="bmc-header-text">
@@ -904,7 +257,7 @@
 
             <!-- PAPER 6: Cost Structure / Keunggulan -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
+                <div class="front content-page">
                     <div class="bmc-header">
                         <div class="bmc-icon-wrap"><i class="fas fa-chart-pie"></i></div>
                         <div class="bmc-header-text">
@@ -928,38 +281,34 @@
                     </ul>
                     <div class="page-num">10 / 14</div>
                 </div>
-                <div class="back" style="padding: 40px 38px;">
-                    <div style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--cream-dark);">
-                        <p
-                            style="font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px;">
-                            Keunggulan Kompetitif</p>
-                        <p
-                            style="font-size: 14px; color: var(--brown-light); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
-                            Why Waffle Go!</p>
+                <div class="back content-page">
+                    <div class="section-header">
+                        <p class="section-title">Keunggulan Kompetitif</p>
+                        <p class="section-subtitle">Why Waffle Go!</p>
                     </div>
                     <div class="advantage-item">
-                        <div class="adv-emoji">🌊</div>
+                        <div class="adv-emoji"><i class="fas fa-water"></i></div>
                         <div class="adv-text">
                             <strong>Blue Ocean Strategy</strong>
                             <span>Pasar baru sebagai makanan fungsional, bukan sekadar dessert</span>
                         </div>
                     </div>
                     <div class="advantage-item">
-                        <div class="adv-emoji">🌾</div>
+                        <div class="adv-emoji"><i class="fas fa-seedling"></i></div>
                         <div class="adv-text">
                             <strong>Nutrisi Superior</strong>
                             <span>100% oat, bebas terigu, pemanis alami</span>
                         </div>
                     </div>
                     <div class="advantage-item">
-                        <div class="adv-emoji">⚡</div>
+                        <div class="adv-emoji"><i class="fas fa-bolt"></i></div>
                         <div class="adv-text">
                             <strong>Speed & Convenience</strong>
                             <span>Kemasan ergonomis on-the-go siap dalam 3 menit</span>
                         </div>
                     </div>
                     <div class="advantage-item">
-                        <div class="adv-emoji">♻️</div>
+                        <div class="adv-emoji"><i class="fas fa-recycle"></i></div>
                         <div class="adv-text">
                             <strong>Eco-Commitment</strong>
                             <span>100% kemasan biodegradable, jejak karbon minim</span>
@@ -971,17 +320,13 @@
 
             <!-- PAPER 7: Menu / Back Cover -->
             <div class="paper">
-                <div class="front" style="padding: 40px 38px;">
-                    <div style="margin-bottom: 24px; padding-bottom: 20px; border-bottom: 2px solid var(--cream-dark);">
-                        <p
-                            style="font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 4px;">
-                            Menu Favorit</p>
-                        <p
-                            style="font-size: 14px; color: var(--brown-light); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;">
-                            Our Signature Waffle</p>
+                <div class="front content-page">
+                    <div class="section-header">
+                        <p class="section-title section-title--large">Menu Favorit</p>
+                        <p class="section-subtitle">Our Signature Waffle</p>
                     </div>
                     <div class="menu-item">
-                        <div class="menu-emoji">🍯</div>
+                        <div class="menu-emoji"><i class="fas fa-droplet"></i></div>
                         <div class="menu-info">
                             <strong>Classic Honey</strong>
                             <span>Madu murni & oat krispi, clean & manis alami</span>
@@ -989,7 +334,7 @@
                         <div class="menu-price">18K</div>
                     </div>
                     <div class="menu-item">
-                        <div class="menu-emoji">🍫</div>
+                        <div class="menu-emoji"><i class="fas fa-cookie-bite"></i></div>
                         <div class="menu-info">
                             <strong>Choco Power</strong>
                             <span>Dark chocolate + almond cincang, protein boost</span>
@@ -997,7 +342,7 @@
                         <div class="menu-price">22K</div>
                     </div>
                     <div class="menu-item">
-                        <div class="menu-emoji">🍓</div>
+                        <div class="menu-emoji"><i class="fas fa-seedling"></i></div>
                         <div class="menu-info">
                             <strong>Berry Fit</strong>
                             <span>Stroberi segar + Greek Yogurt, segar & probiotik</span>
@@ -1005,7 +350,7 @@
                         <div class="menu-price">24K</div>
                     </div>
                     <div class="menu-item">
-                        <div class="menu-emoji">🧀</div>
+                        <div class="menu-emoji"><i class="fas fa-cheese"></i></div>
                         <div class="menu-info">
                             <strong>Savory Cheezy</strong>
                             <span>Keju leleh + oregano, gurih tanpa rasa bersalah</span>
@@ -1036,7 +381,7 @@
                         </div>
                     </div>
                     <div class="flip-hint"><i class="fas fa-arrow-left"></i> Kembali ke awal</div>
-                    <div class="page-num" style="color: rgba(255,255,255,0.4);">14 / 14</div>
+                    <div class="page-num page-num--light">14 / 14</div>
                 </div>
             </div>
 
@@ -1048,105 +393,14 @@
 
     <!-- Navigation -->
     <div class="controls">
-        <button class="ctrl-btn" id="prev-btn" onclick="goPrevPage()">
+        <button class="ctrl-btn" id="prev-btn" type="button">
             <i class="fas fa-chevron-left"></i> Kembali
         </button>
-        <button class="ctrl-btn" id="next-btn" onclick="goNextPage()">
+        <button class="ctrl-btn" id="next-btn" type="button">
             Lanjut <i class="fas fa-chevron-right"></i>
         </button>
     </div>
-
-    <script>
-        const book = document.getElementById('book');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const progressEl = document.getElementById('progress');
-        const papers = document.querySelectorAll('.paper');
-
-        let currentLocation = 1;
-        const numOfPapers = papers.length;
-        const maxLocation = numOfPapers + 1;
-        const totalPages = numOfPapers * 2;
-
-        // Build progress dots
-        for (let i = 0; i < numOfPapers + 1; i++) {
-            const dot = document.createElement('div');
-            dot.className = 'dot' + (i === 0 ? ' active' : '');
-            progressEl.appendChild(dot);
-        }
-
-        // Init z-indexes
-        papers.forEach((p, i) => p.style.zIndex = numOfPapers - i);
-
-        function updateUI() {
-            prevBtn.disabled = currentLocation === 1;
-            nextBtn.disabled = currentLocation === maxLocation;
-
-            // Update dots
-            document.querySelectorAll('.progress .dot').forEach((d, i) => {
-                d.classList.toggle('active', i === currentLocation - 1);
-            });
-        }
-
-        function openBook() {
-            book.style.transform = 'translateX(50%)';
-        }
-
-        function closeBook(start) {
-            book.style.transform = start ? 'translateX(0%)' : 'translateX(100%)';
-        }
-
-        function goNextPage() {
-            if (currentLocation < maxLocation) {
-                const paper = papers[currentLocation - 1];
-                paper.classList.add('flipped');
-                paper.style.zIndex = currentLocation;
-
-                if (currentLocation === 1) openBook();
-                if (currentLocation === numOfPapers) closeBook(false);
-
-                currentLocation++;
-                updateUI();
-            }
-        }
-
-        function goPrevPage() {
-            if (currentLocation > 1) {
-                currentLocation--;
-                const paper = papers[currentLocation - 1];
-                paper.classList.remove('flipped');
-                paper.style.zIndex = numOfPapers - currentLocation + 1;
-
-                if (currentLocation === 1) closeBook(true);
-                if (currentLocation === numOfPapers) openBook();
-
-                updateUI();
-            }
-        }
-
-        // Click on page to flip
-        papers.forEach(paper => {
-            paper.querySelector('.front').addEventListener('click', goNextPage);
-            paper.querySelector('.back').addEventListener('click', goPrevPage);
-        });
-
-        // Keyboard navigation
-        document.addEventListener('keydown', e => {
-            if (e.key === 'ArrowRight' || e.key === ' ') goNextPage();
-            if (e.key === 'ArrowLeft') goPrevPage();
-        });
-
-        // Touch swipe
-        let touchStartX = 0;
-        document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
-        document.addEventListener('touchend', e => {
-            const dx = e.changedTouches[0].clientX - touchStartX;
-            if (dx < -50) goNextPage();
-            if (dx > 50) goPrevPage();
-        });
-
-        updateUI();
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
