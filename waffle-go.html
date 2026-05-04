@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waffle Go! — Business Model Canvas</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --red: #C8372D;
+            --red-dark: #8B1A12;
+            --red-light: #F5C6C3;
+            --cream: #FAF3E8;
+            --cream-dark: #EDE0C8;
+            --brown: #5C3A1E;
+            --brown-light: #9C6B3C;
+            --text: #2C1810;
+            --white: #FFFDF9;
+            --gold: #D4A843;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+
+        body {
+            background: var(--cream);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'DM Sans', sans-serif;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Background texture */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(200,55,45,0.06) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(92,58,30,0.08) 0%, transparent 50%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1' fill='%235C3A1E' opacity='0.06'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Title above book */
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--brown-light);
+            margin-bottom: 18px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Scene + shadow */
+        .scene {
+            position: relative;
+            z-index: 10;
+        }
+
+        .book-shadow {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 320px;
+            height: 30px;
+            background: radial-gradient(ellipse, rgba(44,24,16,0.3) 0%, transparent 70%);
+            filter: blur(8px);
+            z-index: 1;
+            transition: width 0.6s ease;
+        }
+
+        /* Book container */
+        .book {
+            position: relative;
+            width: 340px;
+            height: 500px;
+            transition: transform 0.7s cubic-bezier(0.645, 0.045, 0.355, 1);
+            z-index: 2;
+            transform-style: preserve-3d;
+        }
+
+        /* Paper layers */
+        .paper {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            perspective: 2000px;
+            transform-style: preserve-3d;
+            transform-origin: left center;
+            transition: transform 0.75s cubic-bezier(0.645, 0.045, 0.355, 1);
+            cursor: pointer;
+        }
+
+        /* Page faces */
+        .front, .back {
+            background: var(--white);
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 36px 30px;
+            border-radius: 4px 18px 18px 4px;
+            box-shadow: 
+                inset 6px 0 20px rgba(44,24,16,0.04),
+                2px 4px 25px rgba(44,24,16,0.18),
+                -1px 0 0 rgba(44,24,16,0.08);
+            overflow: hidden;
+        }
+
+        .front::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 6px; height: 100%;
+            background: linear-gradient(to right, rgba(44,24,16,0.12), transparent);
+            border-radius: 4px 0 0 4px;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            border-radius: 18px 4px 4px 18px;
+            box-shadow: 
+                inset -6px 0 20px rgba(44,24,16,0.04),
+                -2px 4px 25px rgba(44,24,16,0.18),
+                1px 0 0 rgba(44,24,16,0.08);
+        }
+
+        .back::before {
+            content: '';
+            position: absolute;
+            right: 0; top: 0;
+            width: 6px; height: 100%;
+            background: linear-gradient(to left, rgba(44,24,16,0.12), transparent);
+            border-radius: 0 4px 4px 0;
+        }
+
+        .paper.flipped {
+            transform: rotateY(-180deg);
+        }
+
+        /* ── COVER ── */
+        .cover {
+            background: linear-gradient(160deg, var(--red-dark) 0%, var(--red) 55%, #E85A4F 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 30px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cover::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect x='38' y='0' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='0' y='38' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='76' y='38' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3Crect x='38' y='76' width='4' height='4' fill='white' opacity='0.04' rx='1'/%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+
+        .cover-waffle-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 2px solid rgba(255,255,255,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-waffle-circle::before {
+            content: '🧇';
+            font-size: 60px;
+            line-height: 1;
+        }
+
+        .cover-brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            color: white;
+            line-height: 1;
+            margin-bottom: 6px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.2);
+        }
+
+        .cover-tagline {
+            font-size: 11px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.75);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cover-badge {
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 30px;
+            padding: 7px 18px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.9);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 22px;
+            color: rgba(255,255,255,0.65);
+            font-size: 11px;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 1;
+            animation: hintBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes hintBounce {
+            0%, 100% { transform: translateX(0); opacity: 0.65; }
+            50% { transform: translateX(5px); opacity: 1; }
+        }
+
+        /* ── BMC PAGES ── */
+        .bmc-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .bmc-icon-wrap {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(200,55,45,0.3);
+        }
+
+        .bmc-icon-wrap i {
+            font-size: 20px;
+            color: white;
+        }
+
+        .bmc-header-text h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .bmc-header-text span {
+            font-size: 11px;
+            color: var(--brown-light);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .bmc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .bmc-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text);
+            line-height: 1.5;
+            background: var(--cream);
+            border-radius: 10px;
+            padding: 10px 12px;
+            border-left: 3px solid var(--cream-dark);
+            transition: border-color 0.2s;
+        }
+
+        .bmc-list li strong {
+            color: var(--red-dark);
+            display: block;
+            font-size: 12px;
+            margin-bottom: 1px;
+        }
+
+        .bmc-list li .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--red);
+            flex-shrink: 0;
+            margin-top: 6px;
+        }
+
+        /* ── INTRO PAGE ── */
+        .intro-page h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--red-dark);
+            margin-bottom: 14px;
+        }
+
+        .intro-page p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: var(--text);
+            margin-bottom: 14px;
+        }
+
+        .intro-highlight {
+            background: linear-gradient(135deg, var(--red) 0%, var(--red-dark) 100%);
+            border-radius: 12px;
+            padding: 14px 16px;
+            color: white;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .intro-highlight strong {
+            font-size: 14px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        /* ── MENU PAGE ── */
+        .menu-item {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border: 1px solid var(--cream-dark);
+        }
+
+        .menu-emoji {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .menu-info strong {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            display: block;
+        }
+
+        .menu-info span {
+            font-size: 11.5px;
+            color: var(--brown-light);
+            line-height: 1.4;
+        }
+
+        .menu-price {
+            margin-left: auto;
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--red);
+            flex-shrink: 0;
+        }
+
+        /* ── ADVANTAGE PAGE ── */
+        .advantage-item {
+            background: var(--cream);
+            border-radius: 12px;
+            padding: 11px 13px;
+            margin-bottom: 9px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .adv-emoji { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+
+        .adv-text strong {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--red-dark);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .adv-text span {
+            font-size: 11.5px;
+            color: var(--text);
+            line-height: 1.45;
+        }
+
+        /* ── BACK COVER ── */
+        .back-cover {
+            background: linear-gradient(160deg, var(--brown) 0%, var(--brown-light) 100%);
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .back-cover::after {
+            content: '🧇';
+            position: absolute;
+            font-size: 200px;
+            opacity: 0.06;
+            bottom: -40px;
+            right: -30px;
+            pointer-events: none;
+        }
+
+        .back-cover h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: white;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .back-cover .sub {
+            font-size: 12px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 24px;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-list {
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
+            padding: 16px 20px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: white;
+        }
+
+        .contact-item i {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .back-cover .flip-hint {
+            animation-name: hintBounceLeft;
+        }
+
+        @keyframes hintBounceLeft {
+            0%, 100% { transform: translateX(0); opacity: 0.65; }
+            50% { transform: translateX(-5px); opacity: 1; }
+        }
+
+        /* Page number */
+        .page-num {
+            position: absolute;
+            bottom: 14px;
+            right: 18px;
+            font-size: 10px;
+            color: var(--cream-dark);
+            letter-spacing: 1px;
+            font-weight: 500;
+        }
+        .back .page-num { left: 18px; right: auto; }
+
+        /* ── NAVIGATION ── */
+        .controls {
+            position: fixed;
+            bottom: 32px;
+            display: flex;
+            gap: 14px;
+            z-index: 100;
+        }
+
+        .ctrl-btn {
+            background: var(--brown);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            box-shadow: 0 4px 16px rgba(44,24,16,0.25);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .ctrl-btn:hover:not(:disabled) {
+            background: var(--red);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(200,55,45,0.35);
+        }
+
+        .ctrl-btn:disabled {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Progress dots */
+        .progress {
+            position: fixed;
+            bottom: 90px;
+            display: flex;
+            gap: 6px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--cream-dark);
+            transition: all 0.3s ease;
+        }
+
+        .dot.active {
+            background: var(--red);
+            width: 18px;
+            border-radius: 3px;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .book { width: 260px; height: 400px; }
+            .front, .back { padding: 24px 20px; }
+            .cover-brand { font-size: 34px; }
+            .bmc-header h2 { font-size: 15px; }
+            .bmc-list li { font-size: 12px; padding: 8px 10px; }
+            .ctrl-btn { padding: 10px 16px; font-size: 12px; }
+        }
+    </style>
+</head>
+<body>
+
+<p class="book-title">Business Model Canvas</p>
+
+<div class="scene">
+    <div class="book-shadow" id="bookShadow"></div>
+    <div class="book" id="book">
+
+        <!-- PAPER 1: Cover / Intro -->
+        <div class="paper">
+            <div class="front cover">
+                <div class="cover-waffle-circle"></div>
+                <div class="cover-brand">Waffle Go!</div>
+                <div class="cover-tagline">Revolusi Camilan Sehat Indonesia</div>
+                <div class="cover-badge">Business Model Canvas</div>
+                <div class="flip-hint">Buka <i class="fas fa-arrow-right"></i></div>
+            </div>
+            <div class="back intro-page" style="padding: 36px 30px;">
+                <h2>Revolusi Waffle Oat</h2>
+                <p>Waffle Go! hadir sebagai pionir kuliner yang memadukan kelezatan camilan bergaya modern dengan gaya hidup sehat—mendobrak stigma bahwa makanan diet itu membosankan.</p>
+                <p>Dokumen ini menjabarkan <strong>9 blok utama BMC</strong> yang memetakan secara detail potensi dan strategi operasional kami.</p>
+                <div class="intro-highlight">
+                    <strong>Misi Kami</strong>
+                    Menjadi brand camilan fungsional #1 di kalangan anak muda Indonesia yang sehat, aktif, dan sadar gizi.
+                </div>
+                <div class="page-num">1 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 2: Customer Segments / Value Propositions -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-users"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Customer Segments</h2>
+                        <span>BMC Blok 1</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Gen Z & Milenial</strong>Usia 15–35 tahun, urban, aktif di media sosial</div></li>
+                    <li><span class="dot"></span><div><strong>Mahasiswa & Pekerja Awal</strong>Sibuk, butuh asupan bergizi yang praktis</div></li>
+                    <li><span class="dot"></span><div><strong>Penganut Hidup Sehat</strong>Fitness enthusiast & health-conscious consumer</div></li>
+                    <li><span class="dot"></span><div><strong>Pencari Makanan On-the-Go</strong>Prioritaskan kecepatan & kepraktisan</div></li>
+                </ul>
+                <div class="page-num">2 / 14</div>
+            </div>
+            <div class="back" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-gem"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Value Propositions</h2>
+                        <span>BMC Blok 2</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>100% Tepung Oat</strong>Tinggi serat, indeks glikemik rendah, bebas terigu</div></li>
+                    <li><span class="dot"></span><div><strong>Cepat Saji & Bergizi</strong>Praktis tanpa kompromi nutrisi</div></li>
+                    <li><span class="dot"></span><div><strong>Eco-Friendly</strong>Kemasan 100% biodegradable</div></li>
+                    <li><span class="dot"></span><div><strong>Rasa Variatif</strong>Manis alami & gurih untuk semua selera</div></li>
+                </ul>
+                <div class="page-num">3 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 3: Channels / Customer Relationships -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-store"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Channels</h2>
+                        <span>BMC Blok 3</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Kiosk Offline</strong>Area kampus, stasiun transit, pusat perbelanjaan</div></li>
+                    <li><span class="dot"></span><div><strong>Platform Online</strong>GoFood, GrabFood, ShopeeFood</div></li>
+                    <li><span class="dot"></span><div><strong>Media Sosial</strong>Instagram, TikTok, WhatsApp Business</div></li>
+                    <li><span class="dot"></span><div><strong>Website & App</strong>Pre-order & loyalty program digital</div></li>
+                </ul>
+                <div class="page-num">4 / 14</div>
+            </div>
+            <div class="back" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-heart"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Customer Relationships</h2>
+                        <span>BMC Blok 4</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Digital Stamp Loyalty</strong>Kumpulkan poin, dapatkan wafel gratis</div></li>
+                    <li><span class="dot"></span><div><strong>Diskon Pelajar</strong>Harga khusus dengan ID Mahasiswa</div></li>
+                    <li><span class="dot"></span><div><strong>Co-creation</strong>Voting menu baru via Instagram Stories</div></li>
+                    <li><span class="dot"></span><div><strong>CS Responsif</strong>Layanan via DM dalam 30 menit</div></li>
+                </ul>
+                <div class="page-num">5 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 4: Revenue Streams / Key Activities -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-money-bill-wave"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Revenue Streams</h2>
+                        <span>BMC Blok 5</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Direct Sales</strong>Penjualan langsung di kiosk/booth</div></li>
+                    <li><span class="dot"></span><div><strong>Online Order</strong>Komisi aplikasi delivery online</div></li>
+                    <li><span class="dot"></span><div><strong>Katering B2B</strong>Event kampus, kantor, arisan komunitas</div></li>
+                    <li><span class="dot"></span><div><strong>Cross-selling</strong>Minuman sehat & merchandise</div></li>
+                </ul>
+                <div class="page-num">6 / 14</div>
+            </div>
+            <div class="back" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-cogs"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Key Activities</h2>
+                        <span>BMC Blok 6</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Produksi Harian</strong>Adonan oat segar disiapkan setiap pagi</div></li>
+                    <li><span class="dot"></span><div><strong>Pelayanan Kilat</strong>Waktu penyajian < 3 menit per porsi</div></li>
+                    <li><span class="dot"></span><div><strong>Pemasaran Digital</strong>Konten edukasi gizi & promo harian</div></li>
+                    <li><span class="dot"></span><div><strong>R&D Rasa Baru</strong>Inovasi menu setiap kuartal</div></li>
+                </ul>
+                <div class="page-num">7 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 5: Key Resources / Key Partnerships -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-box-open"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Key Resources</h2>
+                        <span>BMC Blok 7</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Resep Rahasia</strong>Formulasi adonan oat eksklusif</div></li>
+                    <li><span class="dot"></span><div><strong>Mesin Wafel Industri</strong>Presisi tinggi & kapasitas besar</div></li>
+                    <li><span class="dot"></span><div><strong>SDM Terlatih</strong>Karyawan cekatan & hygiene-certified</div></li>
+                    <li><span class="dot"></span><div><strong>Brand & Sosmed</strong>Identitas visual kuat + 10K+ followers</div></li>
+                </ul>
+                <div class="page-num">8 / 14</div>
+            </div>
+            <div class="back" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-handshake"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Key Partnerships</h2>
+                        <span>BMC Blok 8</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Supplier Oat & Buah</strong>Pemasok lokal berstandar organik</div></li>
+                    <li><span class="dot"></span><div><strong>Penyedia Lahan</strong>Koperasi kampus & minimarket</div></li>
+                    <li><span class="dot"></span><div><strong>Ojek Online</strong>Gojek, Grab, Shopee untuk delivery</div></li>
+                    <li><span class="dot"></span><div><strong>Fintech Payment</strong>QRIS, GoPay, OVO, Dana</div></li>
+                </ul>
+                <div class="page-num">9 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 6: Cost Structure / Keunggulan -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div class="bmc-header">
+                    <div class="bmc-icon-wrap"><i class="fas fa-chart-pie"></i></div>
+                    <div class="bmc-header-text">
+                        <h2>Cost Structure</h2>
+                        <span>BMC Blok 9</span>
+                    </div>
+                </div>
+                <ul class="bmc-list">
+                    <li><span class="dot"></span><div><strong>Biaya Variabel</strong>Bahan baku, kemasan, komisi aplikasi delivery</div></li>
+                    <li><span class="dot"></span><div><strong>Biaya Tetap</strong>Sewa booth, gaji karyawan, utilitas</div></li>
+                    <li><span class="dot"></span><div><strong>Pemasaran</strong>Iklan digital, kolaborasi influencer</div></li>
+                    <li><span class="dot"></span><div><strong>Overhead</strong>Listrik, air, internet, platform fee</div></li>
+                </ul>
+                <div class="page-num">10 / 14</div>
+            </div>
+            <div class="back" style="padding: 28px 26px;">
+                <div style="margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--cream-dark);">
+                    <p style="font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 2px;">Keunggulan Kompetitif</p>
+                    <p style="font-size: 11px; color: var(--brown-light); text-transform: uppercase; letter-spacing: 1px;">Why Waffle Go!</p>
+                </div>
+                <div class="advantage-item">
+                    <div class="adv-emoji">🌊</div>
+                    <div class="adv-text">
+                        <strong>Blue Ocean Strategy</strong>
+                        <span>Pasar baru sebagai makanan fungsional, bukan sekadar dessert</span>
+                    </div>
+                </div>
+                <div class="advantage-item">
+                    <div class="adv-emoji">🌾</div>
+                    <div class="adv-text">
+                        <strong>Nutrisi Superior</strong>
+                        <span>100% oat, bebas terigu, pemanis alami</span>
+                    </div>
+                </div>
+                <div class="advantage-item">
+                    <div class="adv-emoji">⚡</div>
+                    <div class="adv-text">
+                        <strong>Speed & Convenience</strong>
+                        <span>Kemasan ergonomis on-the-go siap dalam 3 menit</span>
+                    </div>
+                </div>
+                <div class="advantage-item">
+                    <div class="adv-emoji">♻️</div>
+                    <div class="adv-text">
+                        <strong>Eco-Commitment</strong>
+                        <span>100% kemasan biodegradable, jejak karbon minim</span>
+                    </div>
+                </div>
+                <div class="page-num">11 / 14</div>
+            </div>
+        </div>
+
+        <!-- PAPER 7: Menu / Back Cover -->
+        <div class="paper">
+            <div class="front" style="padding: 28px 26px;">
+                <div style="margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--cream-dark);">
+                    <p style="font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 2px;">Menu Favorit</p>
+                    <p style="font-size: 11px; color: var(--brown-light); text-transform: uppercase; letter-spacing: 1px;">Our Signature Waffle</p>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-emoji">🍯</div>
+                    <div class="menu-info">
+                        <strong>Classic Honey</strong>
+                        <span>Madu murni & oat krispi, clean & manis alami</span>
+                    </div>
+                    <div class="menu-price">18K</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-emoji">🍫</div>
+                    <div class="menu-info">
+                        <strong>Choco Power</strong>
+                        <span>Dark chocolate + almond cincang, protein boost</span>
+                    </div>
+                    <div class="menu-price">22K</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-emoji">🍓</div>
+                    <div class="menu-info">
+                        <strong>Berry Fit</strong>
+                        <span>Stroberi segar + Greek Yogurt, segar & probiotik</span>
+                    </div>
+                    <div class="menu-price">24K</div>
+                </div>
+                <div class="menu-item">
+                    <div class="menu-emoji">🧀</div>
+                    <div class="menu-info">
+                        <strong>Savory Cheezy</strong>
+                        <span>Keju leleh + oregano, gurih tanpa rasa bersalah</span>
+                    </div>
+                    <div class="menu-price">20K</div>
+                </div>
+                <div class="page-num">12 / 14</div>
+            </div>
+            <div class="back cover back-cover">
+                <h2>Mari Bergabung!</h2>
+                <p class="sub">Jadilah bagian dari revolusi camilan sehat Indonesia</p>
+                <div class="contact-list">
+                    <div class="contact-item">
+                        <i class="fab fa-instagram"></i>
+                        <span>@WaffleGo.id</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>0812-3456-7890</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-globe"></i>
+                        <span>www.wafflego.id</span>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Malang, Jawa Timur</span>
+                    </div>
+                </div>
+                <div class="flip-hint"><i class="fas fa-arrow-left"></i> Kembali ke awal</div>
+                <div class="page-num" style="color: rgba(255,255,255,0.4);">14 / 14</div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Progress dots -->
+<div class="progress" id="progress"></div>
+
+<!-- Navigation -->
+<div class="controls">
+    <button class="ctrl-btn" id="prev-btn" onclick="goPrevPage()">
+        <i class="fas fa-chevron-left"></i> Kembali
+    </button>
+    <button class="ctrl-btn" id="next-btn" onclick="goNextPage()">
+        Lanjut <i class="fas fa-chevron-right"></i>
+    </button>
+</div>
+
+<script>
+    const book = document.getElementById('book');
+    const prevBtn = document.getElementById('prev-btn');
+    const nextBtn = document.getElementById('next-btn');
+    const progressEl = document.getElementById('progress');
+    const papers = document.querySelectorAll('.paper');
+
+    let currentLocation = 1;
+    const numOfPapers = papers.length;
+    const maxLocation = numOfPapers + 1;
+    const totalPages = numOfPapers * 2;
+
+    // Build progress dots
+    for (let i = 0; i < numOfPapers + 1; i++) {
+        const dot = document.createElement('div');
+        dot.className = 'dot' + (i === 0 ? ' active' : '');
+        progressEl.appendChild(dot);
+    }
+
+    // Init z-indexes
+    papers.forEach((p, i) => p.style.zIndex = numOfPapers - i);
+
+    function updateUI() {
+        prevBtn.disabled = currentLocation === 1;
+        nextBtn.disabled = currentLocation === maxLocation;
+
+        // Update dots
+        document.querySelectorAll('.progress .dot').forEach((d, i) => {
+            d.classList.toggle('active', i === currentLocation - 1);
+        });
+    }
+
+    function openBook() {
+        book.style.transform = 'translateX(50%)';
+    }
+
+    function closeBook(start) {
+        book.style.transform = start ? 'translateX(0%)' : 'translateX(100%)';
+    }
+
+    function goNextPage() {
+        if (currentLocation < maxLocation) {
+            const paper = papers[currentLocation - 1];
+            paper.classList.add('flipped');
+            paper.style.zIndex = currentLocation;
+
+            if (currentLocation === 1) openBook();
+            if (currentLocation === numOfPapers) closeBook(false);
+
+            currentLocation++;
+            updateUI();
+        }
+    }
+
+    function goPrevPage() {
+        if (currentLocation > 1) {
+            currentLocation--;
+            const paper = papers[currentLocation - 1];
+            paper.classList.remove('flipped');
+            paper.style.zIndex = numOfPapers - currentLocation + 1;
+
+            if (currentLocation === 1) closeBook(true);
+            if (currentLocation === numOfPapers) openBook();
+
+            updateUI();
+        }
+    }
+
+    // Click on page to flip
+    papers.forEach(paper => {
+        paper.querySelector('.front').addEventListener('click', goNextPage);
+        paper.querySelector('.back').addEventListener('click', goPrevPage);
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', e => {
+        if (e.key === 'ArrowRight' || e.key === ' ') goNextPage();
+        if (e.key === 'ArrowLeft') goPrevPage();
+    });
+
+    // Touch swipe
+    let touchStartX = 0;
+    document.addEventListener('touchstart', e => touchStartX = e.touches[0].clientX);
+    document.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (dx < -50) goNextPage();
+        if (dx > 50) goPrevPage();
+    });
+
+    updateUI();
+</script>
+</body>
+</html>
